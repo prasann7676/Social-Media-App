@@ -54,6 +54,10 @@ exports.register = async (req,res)=>{
 
 exports.login = async(req,res)=>{
     try{
+        await mongoose.connect(process.env.MONGO_URI)
+        .then(con=>console.log(`Database Connected: ${con.connection.host}`))
+        .catch((err)=>console.log("error in connecting database database.js try block",err))
+        
         const {email,password} = req.body;
         // .select("+password") will say that I have to access the password field in the document
         // this is necessary as during creation of user schema, in the password field
