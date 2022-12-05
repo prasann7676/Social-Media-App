@@ -3,6 +3,7 @@ const Post = require("../models/Post");
 const {sendEmail} = require("../middlewares/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
+const mongoose = require('mongoose');
 
 exports.register = async (req,res)=>{
     try{
@@ -112,6 +113,7 @@ exports.login = async(req,res)=>{
         // this can be accessed by req.cookies
     }catch(error){
         res.status(500).json({
+            connectionStatus: mongoose.connection.readyState,
             success:false,
             message:`error while login in controllers users ${error.message}`
         });
