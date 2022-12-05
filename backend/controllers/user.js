@@ -3,7 +3,6 @@ const Post = require("../models/Post");
 const {sendEmail} = require("../middlewares/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
-const mongoose = require('mongoose');
 
 exports.register = async (req,res)=>{
     try{
@@ -54,10 +53,6 @@ exports.register = async (req,res)=>{
 
 exports.login = async(req,res)=>{
     try{
-        await mongoose.connect(process.env.MONGO_URI)
-        .then(con=>console.log(`Database Connected: ${con.connection.host}`))
-        .catch((err)=>console.log("error in connecting database database.js try block",err))
-        
         const {email,password} = req.body;
         // .select("+password") will say that I have to access the password field in the document
         // this is necessary as during creation of user schema, in the password field
@@ -117,9 +112,8 @@ exports.login = async(req,res)=>{
         // this can be accessed by req.cookies
     }catch(error){
         res.status(500).json({
-            connectionStatus: mongoose.connection.readyState,
             success:false,
-            message:`error while login in controllers users ${error.message}`
+            message:error.message
         });
     }
 }
